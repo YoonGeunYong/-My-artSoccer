@@ -36,4 +36,6 @@ private:
 	USphereComponent* CollisionSphere;
 
 	TArray<UPrimitiveComponent*> PrimitiveComponents;
+
+	AActor* Players[12];
 };

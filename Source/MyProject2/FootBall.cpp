@@ -4,7 +4,7 @@
 #include "FootBall.h"
 #include "Components/PrimitiveComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Engine/World.h"
+
 
 // Sets default values
 AFootBall::AFootBall()
@@ -27,12 +27,17 @@ void AFootBall::BeginPlay()
 		CollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &AFootBall::OnOverlapBegin);
 	}
 
-	GetComponents<UPrimitiveComponent>(PrimitiveComponents);
+	for (int i = 0; i < 12; i++)
+	{
+		Players[i] = UGameplayStatics::GetPlayerPawn(this, i);
+	}
+
+	/*GetComponents<UPrimitiveComponent>(PrimitiveComponents);
 
 	for (UPrimitiveComponent* PrimitiveComponent : PrimitiveComponents)
 	{
 		PrimitiveComponent->OnComponentBeginOverlap.AddDynamic(this, &AFootBall::OnOverlapBegin);
-	}
+	}*/
 }
 
 // Called every frame
@@ -46,15 +51,6 @@ void AFootBall::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Othe
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
 	bool bFromSweep, const FHitResult& SweepResult)
 {
-	UWorld* World = GetWorld();
-	for (auto player : PrimitiveComponents)
-	{
-		if (player->GetOwner() == OtherActor)
-		{
-			
-			//GetOwner()->SetActorLocation();
-		}
-	}
 	// 충돌이 발생한 액터
 	AActor* CollidedActor = OtherActor;
 
@@ -67,10 +63,10 @@ void AFootBall::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Othe
 	// 가장 가까운 액터와의 거리 제곱
 	float NearestDistanceSquared = TNumericLimits<float>::Max();
 
-	// 모든 액터를 순회하여 가장 가까운 액터를 찾습니다.
-	for (TActorIterator<AActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+	// 플레이어 액터를 순회하여 가장 가까운 액터를 찾습니다.
+	for (auto player : Players)
 	{
-		AActor* CurrentActor = *ActorItr;
+		AActor* CurrentActor = player;
 		if (CurrentActor != this && CurrentActor != CollidedActor)
 		{
 			float DistanceSquared = FVector::DistSquared(CurrentActor->GetActorLocation(), MyLocation);

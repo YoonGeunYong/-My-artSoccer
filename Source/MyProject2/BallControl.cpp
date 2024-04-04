@@ -4,6 +4,7 @@
 #include "BallControl.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/PrimitiveComponent.h"
+#include "GameFramework/PlayerController.h"
 
 // Sets default values for this component's properties
 UBallControl::UBallControl()
@@ -12,7 +13,7 @@ UBallControl::UBallControl()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	
+	CollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("HitField"));
 	// ...
 }
 
@@ -21,6 +22,7 @@ UBallControl::UBallControl()
 void UBallControl::BeginPlay()
 {
 	Super::BeginPlay();
+	
 
 	APlayerController* CameraControler = UGameplayStatics::GetPlayerController(this, 0);
 	if (CameraControler)
@@ -28,12 +30,17 @@ void UBallControl::BeginPlay()
 		CameraControler->SetViewTargetWithBlend(GetOwner(), 0.0f);
 	}
 
-	for (int i = 0; i < 12; i++)
-	{
-		Players[i] =UGameplayStatics::GetPlayerPawn(this, i);
-	}
-	TArray<UPrimitiveComponent*> Components;
-	Components = GetComponentLevel
+	//if (CollisionSphere)
+	//{
+	//	GetOwner()->SetRootComponent(CollisionSphere);
+	//	CollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &UBallControl::OnOverlapBegin);
+	//}
+
+	//for (int i = 0; i < 12; i++)
+	//{
+	//	Players[i] =UGameplayStatics::GetPlayerPawn(this, i);
+	//}
+	
 
 	// ...
 	
@@ -46,8 +53,39 @@ void UBallControl::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
-	for (int i = 0; i < 12; i++)
-	{
-		GetOwner()->FindComponentByClass<>->NotifyActorBeginOverlap()
-	}
 }
+
+
+//void UBallControl::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+//	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+//	bool bFromSweep, const FHitResult& SweepResult)
+//{
+//	// 충돌이 발생한 액터
+//	AActor* CollidedActor = OtherActor;
+//
+//	// 현재 액터의 위치
+//	FVector MyLocation = GetOwner()->GetActorLocation();
+//
+//	// 가장 가까운 액터
+//	AActor* NearestActor = nullptr;
+//
+//	// 가장 가까운 액터와의 거리 제곱
+//	float NearestDistanceSquared = TNumericLimits<float>::Max();
+//
+//	// 플레이어 액터를 순회하여 가장 가까운 액터를 찾습니다.
+//	for (auto player : Players)
+//	{
+//		AActor* CurrentActor = player;
+//		if (CurrentActor != GetOwner() && CurrentActor == CollidedActor)
+//		{
+//			float DistanceSquared = FVector::DistSquared(CurrentActor->GetActorLocation(), MyLocation);
+//			if (DistanceSquared < NearestDistanceSquared)
+//			{
+//				NearestActor = CurrentActor;
+//				NearestDistanceSquared = DistanceSquared;
+//			}
+//		}
+//	}
+//	//OtherActor = NearestActor;
+//
+//}

@@ -28,6 +28,7 @@ void UBallControl::BeginPlay()
 	if (CameraControler)
 	{
 		CameraControler->SetViewTargetWithBlend(GetOwner(), 0.0f);
+		CameraControler->bAutoManageActiveCameraTarget = false;
 	}
 
 	//if (CollisionSphere)

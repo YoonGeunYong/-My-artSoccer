@@ -13,7 +13,6 @@ UBallControl::UBallControl()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	CollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("HitField"));
 	// ...
 }
 

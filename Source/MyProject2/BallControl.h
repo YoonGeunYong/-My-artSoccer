@@ -8,6 +8,7 @@
 #include "Components/SphereComponent.h"
 #include "BallControl.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOpen);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class MYPROJECT2_API UBallControl : public UActorComponent
@@ -41,5 +42,4 @@ private:
 	USphereComponent* CollisionSphere;
 	AActor* Players[12];
 	
-		
 };
